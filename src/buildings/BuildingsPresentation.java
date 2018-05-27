@@ -41,8 +41,10 @@ public class BuildingsPresentation extends Application {
     @Override
     public void start(Stage primaryStage) {
         VBox root = new VBox(toolBar(), splitRoot());
+        root.setPrefWidth(600);
+        root.setPrefHeight(400);
         
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 400, 600);
         
         primaryStage.setTitle("Buildings");
         primaryStage.setScene(scene);
@@ -52,16 +54,35 @@ public class BuildingsPresentation extends Application {
  
     public ToolBar toolBar() {
         // add Buttons to Toolbar for
-        // Open File, Save, add Entry, delete entry, undoi, redo, (mapView), searchBox (far right side)
+        // Open File, Save, add Entry, delete entry, undo, redo, (mapView), searchBox (far right side)
         ToolBar toolBar = new ToolBar();
-        Button button = new Button("Click Me");
-        toolBar.getItems().add(button);
+        Button openFile = new Button("Open File");
+        toolBar.getItems().add(openFile);
+        
+        Button saveFile = new Button("Save File");
+        toolBar.getItems().add(saveFile);
+        
+        Button addEntry = new Button("Add Entry");
+        toolBar.getItems().add(addEntry);
+        
+        Button deleteEntry = new Button("Delete Entry");
+        toolBar.getItems().add(deleteEntry);
+        
+        Button undo = new Button("Undo");
+        toolBar.getItems().add(undo);
+        
+        Button redo = new Button("Redo");
+        toolBar.getItems().add(redo);
+        
+        Button searchBox = new Button("Search Box");
+        toolBar.getItems().add(searchBox);
         return toolBar;
     }
     
     public SplitPane splitRoot() {
         SplitPane splitRoot = new SplitPane();
         splitRoot.setOrientation(Orientation.HORIZONTAL);
+        splitRoot.setDividerPositions(0.3);
         return splitRoot;
     }
     
@@ -85,9 +106,3 @@ public class BuildingsPresentation extends Application {
         // Should display certain attributes in separated fields at the bottom of the right side VBOX
     }
 }
-    /*
-    * General structur: VBOX containing Toolbar and Splitpane1 (horizontal)
-    * Splitpane1 containing Listview (left) and VBOX (right)
-    * VBox containing Splitpane2 (horizontal)(top) and Detailview bottom
-    * Splitpane2 containing Main attributes (left) and ImageView(Right)
-    */
