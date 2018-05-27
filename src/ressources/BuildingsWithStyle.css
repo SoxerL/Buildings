@@ -1,0 +1,9 @@
+/* 
+ * OOP2 Project - Buildings view application
+ * This is the style sheet containing Styling for the Application
+ * Author: Sacha Leemann
+*/
+
+.toolBar {
+    -fx-background-color: orange;
+}
