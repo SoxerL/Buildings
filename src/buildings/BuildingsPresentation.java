@@ -40,13 +40,13 @@ public class BuildingsPresentation extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        VBox root = new VBox();
-        //root.getChildren().add(toolBar(), splitRoot());
+        VBox root = new VBox(toolBar(), splitRoot());
         
         Scene scene = new Scene(root, 300, 250);
         
         primaryStage.setTitle("Buildings");
         primaryStage.setScene(scene);
+        scene.getStylesheets().add(BuildingsPresentation.class.getResource("/ressources/BuildingsWithStyle.css").toExternalForm());
         primaryStage.show();
     }
  
@@ -54,7 +54,8 @@ public class BuildingsPresentation extends Application {
         // add Buttons to Toolbar for
         // Open File, Save, add Entry, delete entry, undoi, redo, (mapView), searchBox (far right side)
         ToolBar toolBar = new ToolBar();
-        
+        Button button = new Button("Click Me");
+        toolBar.getItems().add(button);
         return toolBar;
     }
     
