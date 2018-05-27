@@ -6,12 +6,24 @@
 package buildings;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * This class handles the data part of a buildings view application
@@ -24,6 +36,7 @@ import javafx.collections.ObservableList;
 public class BuildingsData {
     
     ObservableList<Building> observBuildings = FXCollections.observableArrayList();
+    Alert alert;
     
     public void readFile(String filePath) {
         // Read in a new ascii file, throws exception if file has wrong formatting (ie takes int, gets string)
@@ -58,24 +71,99 @@ public class BuildingsData {
                throw new FileFormatException(filePath);
             }
         } catch (FileNotFoundException f) {
-            // Do Something
+            alert.setTitle("FileNotFoundException");
+            alert.setContentText("Could not find file: " + filePath);
+            alert.showAndWait();
         } catch (FileFormatException f) {
-            // Do Something
+            alert.setTitle("FileFormatException");
+            alert.setContentText(filePath + " has the wrong Format\n"
+                                 + "Please chose a file with the following format:\n"
+                                 + "ID;RANK;BUILDING;CITY;COUNTRY;HEIGHT_M;HEIGHT_FT;"
+                                 + "FLOORS;BUILD;ARCHITECT;ARCHITECTUTAL_STYLE;COST;"
+                                 + "MATERIAL;LONGITUDE;LATITUDE;IMAGE_URL");
+            
+            alert.showAndWait();
         } catch (IOException io) {
-            // Do Something
+            alert.setTitle("IOException");
+            alert.setContentText("The exception stacktrace was:");
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            io.printStackTrace(pw);
+            String stackTrace = sw.toString();
+            TextArea textArea = new TextArea(stackTrace);
+            textArea.setEditable(false);
+            textArea.setWrapText(true);
+
+            textArea.setMaxWidth(Double.MAX_VALUE);
+            textArea.setMaxHeight(Double.MAX_VALUE);
+            GridPane.setVgrow(textArea, Priority.ALWAYS);
+            GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+            GridPane expContent = new GridPane();
+            expContent.setMaxWidth(Double.MAX_VALUE);
+            expContent.add(textArea, 0, 1);
+
+            // Set expandable Exception into the dialog pane.
+            alert.getDialogPane().setExpandableContent(expContent);
+            alert.showAndWait();
         }
     }
     
-    public void openFile() {
+    public void openFile(Stage primaryStage) {
         // gets activated on pressing openfile, should promp a window where you can enter a file
         // gets the filePath and gives it to the readFile method
-        readFile(filePath);
-    
+        //readFile(filePath);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(primaryStage);
+        readFile(file.getPath());
     }
     
-    public void saveFile() {
+    public void saveFile(Stage primaryStage) {
         // save the current open file (apply changes at this point)
-        
+        FileChooser fileChooser = new FileChooser();
+  
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+              
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+              
+        if(file != null){
+            try {
+                FileWriter fileWriter = new FileWriter(file);
+                for(int index = 0; index < observBuildings.size(); index++) {
+                    StringBuilder buildLine = new StringBuilder();
+                    Building b = observBuildings.get(index);
+
+                    buildLine.append(b.getiD()).append(";");
+                    buildLine.append(b.getRank()).append(";");
+                    buildLine.append(b.getName()).append(";");
+                    buildLine.append(b.getCity()).append(";");
+                    buildLine.append(b.getCountry()).append(";");
+                    buildLine.append(b.getHeightM()).append(";");
+                    buildLine.append(b.getHeightFT()).append(";");
+                    buildLine.append(b.getFloors()).append(";");
+                    buildLine.append(b.getBuildYear()).append(";");
+                    buildLine.append(b.getArchitect()).append(";");
+                    buildLine.append(b.getArchitecturalStyle()).append(";");
+                    buildLine.append(b.getCost()).append(";");
+                    buildLine.append(b.getMaterial()).append(";");
+                    buildLine.append(b.getLongitude()).append(";");
+                    buildLine.append(b.getLatitude()).append(";");
+                    buildLine.append(b.getImageURL());
+                    
+                    fileWriter.write(buildLine.toString());
+                    if(index < observBuildings.size() -1) {
+                        fileWriter.write(System.lineSeparator());
+                    }   
+                }
+                fileWriter.close();
+            } catch (IOException io) {        
+                // alert popup
+            }
+        }
     }
     
     public void newEntry() {
