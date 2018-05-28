@@ -1,10 +1,11 @@
 /*
  * OOP2 Project - Buildings view application
  * Author: Sacha Leemann
- * This class contains the presentation model for this Project
+ * This class is part of the presentation model for this Project
  */
-package buildings;
+package buildingsUI;
 
+import buildingsData.Building;
 import java.io.File;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -30,40 +31,14 @@ import javafx.stage.Stage;
  * @author Sacha
  * @version 0.1
  */
-public class BuildingsPresentation extends Application {
+public class BuildingsPresentation {
+     
+    // Injectable oder Objekt kreiren
         
      /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        launch(args);
-    }
-    
-    @Override
-    public void start(Stage primaryStage) {
-        AnchorPane anchorRoot = new AnchorPane();
-        primaryStage.setMinWidth(300);
-        primaryStage.setMinHeight(200);
-        
-        anchorRoot.setPrefWidth(600);
-        anchorRoot.setPrefHeight(400);
-       
-        
-        VBox root = root();
-        AnchorPane.setTopAnchor(root,1.0);
-        AnchorPane.setLeftAnchor(root,1.0);
-        AnchorPane.setBottomAnchor(root,1.0);
-        AnchorPane.setRightAnchor(root, 1.0);
-        anchorRoot.getChildren().add(root);
-        
-        Scene scene = new Scene(anchorRoot, 600, 400);
-        
-        primaryStage.setTitle("Buildings");
-        primaryStage.setScene(scene);
-        scene.getStylesheets().add(BuildingsPresentation.class.getResource("/ressources/BuildingsWithStyle.css").toExternalForm());
-        primaryStage.show();
-    }
-    
+      
     
     public VBox root() {
         VBox root = new VBox(toolBar(), rootBottomAnchor());
@@ -91,8 +66,9 @@ public class BuildingsPresentation extends Application {
         // add Buttons to Toolbar for
         // Open File, Save, add Entry, delete entry, undo, redo, (mapView), searchBox (far right side)
         ToolBar toolBar = new ToolBar();
+      
         Button openFile = new Button("Open File");
-        toolBar.getItems().add(openFile);
+        toolBar.getItems().add(openFile);  
         
         Button saveFile = new Button("Save File");
         toolBar.getItems().add(saveFile);
@@ -123,7 +99,7 @@ public class BuildingsPresentation extends Application {
     
     public AnchorPane anchorRootLeft() {
         AnchorPane anchorRootLeft = new AnchorPane();
-        ListView leftView = listView();
+        ListView<Building> leftView = listView();
         
         AnchorPane.setTopAnchor(leftView,0.0);
         AnchorPane.setLeftAnchor(leftView,0.0);
@@ -147,8 +123,9 @@ public class BuildingsPresentation extends Application {
         return anchorRootRight;  
     }
     
-    public ListView listView() {
-        ListView leftView = new ListView();
+    public ListView<Building> listView() {
+        ListView<Building> leftView = new ListView<>();
+        //leftView.itemsProperty().setValue(BuildingsData.observBuildings);
         return leftView;
     }
     

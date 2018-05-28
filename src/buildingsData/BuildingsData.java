@@ -1,9 +1,9 @@
 /*
  * OOP2 Project - Buildings view application
  * Author: Sacha Leemann
- * This class contains the complete datamodel for this Project except the buildings class
+ * This class is part of the datamodel for this Project except the buildings class
  */
-package buildings;
+package buildingsData;
 
 import java.io.BufferedReader;
 import java.io.File;

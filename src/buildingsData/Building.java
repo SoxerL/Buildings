@@ -1,9 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * OOP2 Project - Buildings view application
+ * Author: Sacha Leemann
+ * This class is part of the datamodel for this Project except the buildings class
  */
-package buildings;
+package buildingsData;
 
 /**
  * This class is used to represent the biggest buildings in the World.
